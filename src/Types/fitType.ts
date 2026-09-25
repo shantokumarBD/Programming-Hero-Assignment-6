@@ -6,7 +6,7 @@ export interface WorkoutType {
   equipment: string;
   difficulty: string;
   duration: number;
-  calories: number;
+  caloriesBurned: number;
   sets: number;
   reps: string;
   rating: number;
