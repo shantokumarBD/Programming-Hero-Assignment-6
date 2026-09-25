@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Bookmark, Dumbbell, Menu } from "lucide-react";
+import { Dumbbell, Menu } from "lucide-react";
 import NavLinks from "./NavLink";
+import NavBadges from "./NavBadges";
 
 const Navbar = () => {
   return (
@@ -33,15 +34,7 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-end flex gap-2 md:gap-3">
-          <Link href="/my-plan" className="flex items-center gap-1 md:gap-2 text-white font-bold text-xs md:text-sm">
-            <span>Plan</span>
-            <span className="bg-brand text-black text-[10px] md:text-xs px-2 py-0.5 badge rounded-full">0</span>
-          </Link>
-
-          <Link href="/my-plan" className="flex items-center gap-1 md:gap-2 text-white font-bold text-xs md:text-sm hover:border-gray-400">
-            <span>Saved</span>
-            <span className="badge text-white text-[10px] md:text-xs px-2 py-0.5 rounded-full border-gray-600">0</span>
-          </Link>
+           <NavBadges />
         </div>
 
       </nav>
