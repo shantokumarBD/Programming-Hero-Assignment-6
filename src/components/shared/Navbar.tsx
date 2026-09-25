@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Dumbbell, Menu } from "lucide-react";
+import { Bookmark, Dumbbell, Menu } from "lucide-react";
+import NavLinks from "./NavLink";
 
 const Navbar = () => {
   return (
@@ -15,8 +16,7 @@ const Navbar = () => {
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-[#1f2937] text-white rounded-box z-[1] mt-3 w-52 p-2 shadow border border-gray-700"
             >
-              <li><Link href="#">Workout</Link></li>
-              <li><Link href="/my-plan">My Plan</Link></li>
+              <NavLinks />
             </ul>
           </div>
           
@@ -27,9 +27,8 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1 text-gray-300 font-semibold uppercase text-sm gap-2">
-            <li><Link href="#">Workout</Link></li>
-            <li><Link href="/my-plan">My Plan</Link></li>
+          <ul className="menu menu-horizontal px-1 font-semibold uppercase text-sm gap-2">
+            <NavLinks />
           </ul>
         </div>
 
