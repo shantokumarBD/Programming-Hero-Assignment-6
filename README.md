@@ -80,7 +80,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `GET /api/fitlog`     | Fetch all 12 workouts        |
 | `GET /api/fitlog/:id` | Fetch a single workout by ID |
 
-**Base URL:** `https://api.abcz.workers.dev`
+**Base URL:** `https://api.api-store.workers.dev`
 
 ---
 
