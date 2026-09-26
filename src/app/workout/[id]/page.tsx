@@ -88,7 +88,7 @@ const page = async ({params}: PageProps) => {
             </ul>
           </div>
 
-          {/* <ActionButtons workout={workout} /> */}
+          <ActionButtons workout={workout} />
           
         </div>
       </div>
