@@ -43,6 +43,10 @@ export const FitLogProvider = ({ children }: { children: ReactNode }) => {
   }, [plan, saved, isLoaded]);
 
   const addToPlan = (workout: WorkoutType) => {
+    if (plan.length >= 5) {
+      toast.error("Plan is full! Max 5 lifts per day.");
+      return;
+    }
     if (!plan.find((item) => item.id === workout.id)) {
       setPlan([...plan, { ...workout, isDone: false }]);
       toast.success("Added to today's plan!");

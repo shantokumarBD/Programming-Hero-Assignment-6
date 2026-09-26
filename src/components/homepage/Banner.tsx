@@ -22,7 +22,7 @@ const Banner = () => {
           
           <div className="pt-4">
             <Link
-              href="/library"
+              href="#library"
               className="inline-flex items-center gap-2 bg-brand text-black px-8 py-4 rounded-full font-bold uppercase tracking-wide hover:bg-brand-hover transition-colors"
             >
               Browse Workouts

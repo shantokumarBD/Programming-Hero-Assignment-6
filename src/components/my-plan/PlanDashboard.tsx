@@ -1,7 +1,7 @@
 "use client";
 
 import { useFitLog } from "@/context/FitLogContext";
-import { Clock, Flame, Star, X, Check } from "lucide-react";
+import { Clock, Flame, Star, X, Check, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -11,6 +11,7 @@ export default function PlanDashboard() {
     useFitLog();
 
   const [activeTab, setActiveTab] = useState<"plan" | "saved">("plan");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [sortBy, setSortBy] = useState<
     "none" | "duration" | "calories" | "rating"
@@ -18,10 +19,20 @@ export default function PlanDashboard() {
 
   const displayList = activeTab === "plan" ? plan : saved;
 
+  const filteredList = searchQuery.trim()
+    ? displayList.filter(
+        (w) =>
+          w.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          w.muscleGroups?.some((g) =>
+            g.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+      )
+    : displayList;
+
   const sortedList =
     sortBy === "none"
-      ? displayList
-      : [...displayList].sort((a, b) => {
+      ? filteredList
+      : [...filteredList].sort((a, b) => {
           if (sortBy === "duration") return b.duration - a.duration;
           if (sortBy === "calories") return b.caloriesBurned - a.caloriesBurned;
           if (sortBy === "rating") return b.rating - a.rating;
@@ -39,7 +50,7 @@ export default function PlanDashboard() {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
         <p className="text-white text-xl font-oswald animate-pulse">
-          Loading dashboard...
+          Loading workouts...
         </p>
       </div>
     );
@@ -78,7 +89,7 @@ export default function PlanDashboard() {
       </div>
 
       {/* Tabs and Sorting */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
         <div className="flex gap-2 bg-[#18181b] p-1 rounded-xl border border-gray-800">
           <button
             className={`px-6 py-2 rounded-lg text-sm font-semibold transition ${activeTab === "plan" ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white"}`}
@@ -111,6 +122,18 @@ export default function PlanDashboard() {
             <option value="rating">Rating</option>
           </select>
         </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className="relative mb-6">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+        <input
+          type="text"
+          placeholder="Search by name or muscle group..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full bg-[#18181b] text-white text-sm border border-gray-800 rounded-xl pl-10 pr-4 py-3 outline-none focus:border-brand transition placeholder:text-gray-600"
+        />
       </div>
 
       {/* List */}
