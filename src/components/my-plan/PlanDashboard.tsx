@@ -7,23 +7,26 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function PlanDashboard() {
-  const { plan, saved, markAsDone, removeFromPlan, toggleSaved } = useFitLog();
+  const { plan, saved, isLoaded, markAsDone, removeFromPlan, toggleSaved } =
+    useFitLog();
 
   const [activeTab, setActiveTab] = useState<"plan" | "saved">("plan");
-  
-  const [sortBy, setSortBy] = useState<"none" | "duration" | "calories" | "rating">("none");
-  
+
+  const [sortBy, setSortBy] = useState<
+    "none" | "duration" | "calories" | "rating"
+  >("none");
+
   const displayList = activeTab === "plan" ? plan : saved;
 
-  
-  const sortedList = sortBy === "none" 
-    ? displayList 
-    : [...displayList].sort((a, b) => {
-        if (sortBy === "duration") return b.duration - a.duration;
-        if (sortBy === "calories") return b.caloriesBurned - a.caloriesBurned;
-        if (sortBy === "rating") return b.rating - a.rating;
-        return 0;
-      });
+  const sortedList =
+    sortBy === "none"
+      ? displayList
+      : [...displayList].sort((a, b) => {
+          if (sortBy === "duration") return b.duration - a.duration;
+          if (sortBy === "calories") return b.caloriesBurned - a.caloriesBurned;
+          if (sortBy === "rating") return b.rating - a.rating;
+          return 0;
+        });
 
   const totalExercises = plan.length;
   const totalMinutes = plan.reduce((sum, workout) => sum + workout.duration, 0);
@@ -31,6 +34,16 @@ export default function PlanDashboard() {
     (sum, workout) => sum + workout.caloriesBurned,
     0,
   );
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center">
+        <p className="text-white text-xl font-oswald animate-pulse">
+          Loading dashboard...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col w-full">
@@ -86,7 +99,9 @@ export default function PlanDashboard() {
           <select
             value={sortBy}
             onChange={(e) =>
-              setSortBy(e.target.value as "none" | "duration" | "calories" | "rating")
+              setSortBy(
+                e.target.value as "none" | "duration" | "calories" | "rating",
+              )
             }
             className="bg-[#18181b] text-white text-sm font-medium border border-gray-800 rounded-lg px-4 py-2 outline-none cursor-pointer"
           >

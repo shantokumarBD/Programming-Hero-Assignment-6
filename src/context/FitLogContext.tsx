@@ -1,12 +1,13 @@
 "use client";
 
 import { WorkoutType } from "@/Types/fitType";
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import toast from "react-hot-toast";
 
 interface FitLogContextType {
   plan: WorkoutType[];
   saved: WorkoutType[];
+  isLoaded: boolean;
   addToPlan: (workout: WorkoutType) => void;
   removeFromPlan: (id: number) => void;
   toggleSaved: (workout: WorkoutType) => void;
@@ -20,6 +21,26 @@ const FitLogContext = createContext<FitLogContextType | undefined>(undefined);
 export const FitLogProvider = ({ children }: { children: ReactNode }) => {
   const [plan, setPlan] = useState<WorkoutType[]>([]);
   const [saved, setSaved] = useState<WorkoutType[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load from local storage on mount
+  useEffect(() => {
+    const localPlan = localStorage.getItem("fitlog_plan");
+    const localSaved = localStorage.getItem("fitlog_saved");
+    
+    if (localPlan) setPlan(JSON.parse(localPlan));
+    if (localSaved) setSaved(JSON.parse(localSaved));
+    
+    setIsLoaded(true);
+  }, []);
+
+  // Save to local storage whenever state changes
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem("fitlog_plan", JSON.stringify(plan));
+      localStorage.setItem("fitlog_saved", JSON.stringify(saved));
+    }
+  }, [plan, saved, isLoaded]);
 
   const addToPlan = (workout: WorkoutType) => {
     if (!plan.find((item) => item.id === workout.id)) {
@@ -60,6 +81,7 @@ export const FitLogProvider = ({ children }: { children: ReactNode }) => {
   const contextValue = {
     plan, 
     saved, 
+    isLoaded,
     addToPlan, 
     removeFromPlan,
     toggleSaved, 
